@@ -5,7 +5,7 @@ exports.render = function (options, callback) {
 };
 
 exports.renderFile = function (path, options, callback) {
-  return exports.render(options, callback);
+  callback(null, exports.render(options, callback));
 };
 
 exports.__express = exports.renderFile;
