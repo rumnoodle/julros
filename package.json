@@ -1,0 +1,23 @@
+{
+  "name": "julros",
+  "version": "0.0.1",
+  "description": "Julros is a templating engine",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/rumnoodle/julros.git"
+  },
+  "keywords": [
+    "template",
+    "engine"
+  ],
+  "author": "Antero Karki",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rumnoodle/julros/issues"
+  },
+  "homepage": "https://github.com/rumnoodle/julros#readme"
+}
