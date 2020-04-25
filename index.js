@@ -3,3 +3,9 @@ exports.render = function (options, callback) {
   console.log(callback);
   return "<h1>Just testing</h1>";
 };
+
+exports.renderFile = function (path, options, callback) {
+  exports.render(options, callback);
+};
+
+exports.__express = exports.renderFile;
