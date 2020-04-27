@@ -1,12 +1,12 @@
-exports.render = function (options, callback) {
-  console.log(options);
-  console.log(callback);
-  return "<h1>Just testing</h1>";
+const fs = require("fs");
+
+exports.render = function (filename, options, callback) {
+  const content = fs.readFileSync(filename, "utf8");
+  return content;
 };
 
-exports.renderFile = function (path, options, callback) {
-  console.log(path);
-  callback(null, exports.render(options, callback));
+exports.renderFile = function (filename, options, callback) {
+  callback(null, exports.render(filename, options, callback));
 };
 
 exports.__express = exports.renderFile;
