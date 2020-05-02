@@ -8,7 +8,7 @@ getFileContentsMock = function (filePath) {
   } else if (
     filePath === "/home/who/project/src/views/layouts/default.julros"
   ) {
-    return "<body>{{ view }}</body>";
+    return "<body>{ view }</body>";
   } else {
     return "";
   }

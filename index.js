@@ -10,7 +10,7 @@ getFileContents = function (fileName) {
 };
 
 wrapLayout = function (layout, view) {
-  const viewRegex = /\{\{\s*view\s*\}\}/;
+  const viewRegex = /\{\s*view\s*\}/;
   if (layout) {
     if (layout.match(viewRegex)) {
       return layout.replace(viewRegex, view);
