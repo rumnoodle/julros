@@ -19,12 +19,17 @@ wrapLayout = function (layout, view) {
   return view;
 };
 
-exports.render = function (filepath, options) {
-  const relativeViewsFolder = options.settings.views.replace(/^\.\//, "");
+getViewsFolder = function (filepath, viewspath) {
+  const relativeViewsFolder = viewspath.replace(/^\.\//, "");
   const viewsFolder = filepath.substring(
     0,
     filepath.lastIndexOf(relativeViewsFolder) + relativeViewsFolder.length
   );
+  return viewsFolder;
+};
+
+exports.render = function (filepath, options) {
+  const viewsFolder = getViewsFolder(filepath, options.settings.views);
   const layoutsFolder = path.join(viewsFolder, "layouts");
   const layoutFilename = (options.layout || "default") + ".julros";
   const layoutFilepath = path.join(layoutsFolder, layoutFilename);
