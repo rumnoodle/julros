@@ -19,6 +19,17 @@ wrapLayout = function (layout, view) {
   return view;
 };
 
+replaceVariables = function (view, input) {
+  const templateVars = view.matchAll(/\{\s*([^\s\{\}]+)\s*\}/g);
+  for (const variable of templateVars) {
+    if (input[variable[1]]) {
+      view = view.replace(variable[0], input[variable[1]]);
+    }
+  }
+
+  return view;
+};
+
 getViewsFolder = function (filePath, viewsPath) {
   const relativeViewsFolder = viewsPath.replace(/^\.\//, "");
   const viewsFolder = filePath.substring(
