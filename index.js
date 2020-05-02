@@ -1,9 +1,9 @@
 const fs = require("fs");
 const path = require("path");
 
-getLayout = function (filename) {
+getLayout = function (fileName) {
   try {
-    return fs.readFileSync(filename, "utf8");
+    return fs.readFileSync(fileName, "utf8");
   } catch (err) {
     return "";
   }
@@ -19,29 +19,33 @@ wrapLayout = function (layout, view) {
   return view;
 };
 
-getViewsFolder = function (filepath, viewspath) {
-  const relativeViewsFolder = viewspath.replace(/^\.\//, "");
-  const viewsFolder = filepath.substring(
+getViewsFolder = function (filePath, viewsPath) {
+  const relativeViewsFolder = viewsPath.replace(/^\.\//, "");
+  const viewsFolder = filePath.substring(
     0,
-    filepath.lastIndexOf(relativeViewsFolder) + relativeViewsFolder.length
+    filePath.lastIndexOf(relativeViewsFolder) + relativeViewsFolder.length
   );
   return viewsFolder;
 };
 
-exports.render = function (filepath, options) {
-  const viewsFolder = getViewsFolder(filepath, options.settings.views);
+getLayoutFilePath = function (layoutFileName, viewsFolder) {
+  //do something
+};
+
+exports.render = function (filePath, options) {
+  const viewsFolder = getViewsFolder(filePath, options.settings.views);
   const layoutsFolder = path.join(viewsFolder, "layouts");
-  const layoutFilename = (options.layout || "default") + ".julros";
-  const layoutFilepath = path.join(layoutsFolder, layoutFilename);
-  const layoutContent = getLayout(layoutFilepath);
+  const layoutFileName = (options.layout || "default") + ".julros";
+  const layoutFilePath = path.join(layoutsFolder, layoutFileName);
+  const layoutContent = getLayout(layoutFilePath);
   ("");
-  const viewContent = fs.readFileSync(filepath, "utf8");
+  const viewContent = fs.readFileSync(filePath, "utf8");
   let content = wrapLayout(layoutContent, viewContent);
   return content;
 };
 
-exports.renderFile = function (filepath, options, callback) {
-  callback(null, exports.render(filepath, options));
+exports.renderFile = function (filePath, options, callback) {
+  callback(null, exports.render(filePath, options));
 };
 
 exports.__express = exports.renderFile;
