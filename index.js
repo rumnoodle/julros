@@ -28,18 +28,18 @@ getViewsFolder = function (filePath, viewsPath) {
   return viewsFolder;
 };
 
-getLayoutFilePath = function (layoutFileName, viewsFolder) {
-  //do something
+getLayoutFilePath = function (viewsFolder, layoutName) {
+  const layoutsFolder = path.join(viewsFolder, "layouts");
+  const layoutFileName = (layoutName || "default") + ".julros";
+  const layoutFilePath = path.join(layoutsFolder, layoutFileName);
+  return layoutFilePath;
 };
 
 exports.render = function (filePath, options) {
   const viewsFolder = getViewsFolder(filePath, options.settings.views);
-  const layoutsFolder = path.join(viewsFolder, "layouts");
-  const layoutFileName = (options.layout || "default") + ".julros";
-  const layoutFilePath = path.join(layoutsFolder, layoutFileName);
-  const layoutContent = getLayout(layoutFilePath);
-  ("");
   const viewContent = fs.readFileSync(filePath, "utf8");
+  const layoutFilePath = getLayoutFilePath(viewsFolder, options.layout);
+  const layoutContent = getLayout(layoutFilePath);
   let content = wrapLayout(layoutContent, viewContent);
   return content;
 };

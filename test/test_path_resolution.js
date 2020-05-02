@@ -3,6 +3,7 @@ const rewire = require("rewire");
 const app = rewire("../index.js");
 
 const getViewsFolder = app.__get__("getViewsFolder");
+const getLayoutFilePath = app.__get__("getLayoutFilePath");
 
 describe("Paths to views, layouts etc are resolved correctly", () => {
   it("should return correct views folder", () => {
@@ -20,5 +21,13 @@ describe("Paths to views, layouts etc are resolved correctly", () => {
     const expected = "/home/who/project/src/views/fold/src/views";
 
     assert.equal(expected, getViewsFolder(viewFilePath, viewsPath));
+  });
+
+  it("should get correct layouts file path", () => {
+    const viewsFolder = "/home/who/project/src/views";
+    const layoutName = "cool-layout";
+    const expected = "/home/who/project/src/views/layouts/cool-layout.julros";
+
+    assert.equal(expected, getLayoutFilePath(viewsFolder, layoutName));
   });
 });
