@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-getLayout = function (fileName) {
+getFileContents = function (fileName) {
   try {
     return fs.readFileSync(fileName, "utf8");
   } catch (err) {
@@ -35,17 +35,19 @@ getLayoutFilePath = function (viewsFolder, layoutName) {
   return layoutFilePath;
 };
 
-exports.render = function (filePath, options) {
-  const viewsFolder = getViewsFolder(filePath, options.settings.views);
-  const viewContent = fs.readFileSync(filePath, "utf8");
+exports.render = function (viewFilePath, options) {
+  const viewsFolder = getViewsFolder(viewFilePath, options.settings.views);
   const layoutFilePath = getLayoutFilePath(viewsFolder, options.layout);
-  const layoutContent = getLayout(layoutFilePath);
+
+  const viewContent = getFileContents(viewFilePath);
+  const layoutContent = getFileContents(layoutFilePath);
+
   let content = wrapLayout(layoutContent, viewContent);
   return content;
 };
 
-exports.renderFile = function (filePath, options, callback) {
-  callback(null, exports.render(filePath, options));
+exports.renderFile = function (viewFilePath, options, callback) {
+  callback(null, exports.render(viewFilePath, options));
 };
 
 exports.__express = exports.renderFile;
