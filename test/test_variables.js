@@ -51,4 +51,14 @@ describe("Test that variables are parsed", () => {
       expected
     );
   });
+
+  it("should remove undefined variable", () => {
+    const view = "<p>This is a { undefinedVariable }</p>";
+    const expected = "<p>This is a </p>";
+
+    assert.equal(
+      viewBuilder.build(view, {}),
+      expected
+    );
+  });
 });
