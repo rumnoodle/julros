@@ -1,6 +1,6 @@
 {
   "name": "julros",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Julros is a templating engine",
   "main": "index.js",
   "scripts": {

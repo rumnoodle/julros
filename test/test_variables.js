@@ -8,8 +8,22 @@ describe("Test that variables are parsed", () => {
     const expected = "<p>This is a variable value</p>";
 
     assert.equal(
-      expected,
-      viewBuilder.build(view, { variable: "variable value" })
+      viewBuilder.build(view, { variable: "variable value" }),
+      expected
+    );
+  });
+
+  it("should parse multiple variables", () => {
+    const view = "<p>This is a { variable }\nand this is { another }</p>";
+    const expected =
+      "<p>This is a variable value\nand this is another value</p>";
+
+    assert.equal(
+      viewBuilder.build(view, {
+        variable: "variable value",
+        another: "another value",
+      }),
+      expected
     );
   });
 });

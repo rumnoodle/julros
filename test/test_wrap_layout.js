@@ -10,6 +10,6 @@ describe("Test wrapping layout around view", () => {
     const view = "<p>This is the view</p>";
     const expected = "<body><p>This is the view</p></body>";
 
-    assert.equal(expected, wrapLayout(layout, view));
+    assert.equal(wrapLayout(layout, view), expected);
   });
 });
