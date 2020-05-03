@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const parse = require("./parser.js").parse;
 
 getFileContents = function (fileName) {
   try {
@@ -16,17 +17,6 @@ wrapLayout = function (layout, view) {
       return layout.replace(viewRegex, view);
     }
   }
-  return view;
-};
-
-replaceVariables = function (view, input) {
-  const templateVars = view.matchAll(/\{\s*([^\s\{\}]+)\s*\}/g);
-  for (const variable of templateVars) {
-    if (input[variable[1]]) {
-      view = view.replace(variable[0], input[variable[1]]);
-    }
-  }
-
   return view;
 };
 
@@ -54,7 +44,7 @@ exports.render = function (viewFilePath, options) {
   const layoutContent = getFileContents(layoutFilePath);
 
   let content = wrapLayout(layoutContent, viewContent);
-  return content;
+  return parse(content, options);
 };
 
 exports.renderFile = function (viewFilePath, options, callback) {
