@@ -1,5 +1,20 @@
 let viewData = {};
 
+resolveVariable = function (name) {
+  let scope = viewData;
+  let nameParts = name.split(".");
+
+  for (const part of nameParts) {
+    if (scope[part] === undefined) {
+      return undefined;
+    }
+
+    scope = scope[part];
+  }
+
+  return scope;
+};
+
 parseToNextToken = function (src) {
   tokenData = {
     eof: false,
@@ -43,7 +58,11 @@ parse = function (src, view) {
     view += tokenData.preTokenString;
 
     if (tokenData.token) {
-      view += viewData[tokenData.token];
+      let variableValue = resolveVariable(tokenData.token);
+
+      if (variableValue) {
+        view += variableValue;
+      }
     }
   }
 

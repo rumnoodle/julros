@@ -39,4 +39,16 @@ describe("Test that variables are parsed", () => {
       expected
     );
   });
+
+  it("should parse nested variable", () => {
+    const view = "<p>This is a { nested.variable }</p>";
+    const expected = "<p>This is a nested variable value</p>";
+
+    assert.equal(
+      viewBuilder.build(view, {
+        nested: { variable: "nested variable value" },
+      }),
+      expected
+    );
+  });
 });
