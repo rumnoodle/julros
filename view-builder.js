@@ -36,10 +36,12 @@ parseToNextToken = function (src) {
       }
     } else {
       if (src.content[src.index] === '"' && !insideTokenString) {
+        tokenString += src.content[src.index];
         insideTokenString = true;
       } else if (insideTokenString && src.content[src.index] !== '"') {
-        tokenData.value += src.content[src.index];
+        tokenString += src.content[src.index];
       } else if (insideTokenString && src.content[src.index] === '"') {
+        tokenString += src.content[src.index];
         insideTokenString = false;
       } else if (src.content[src.index] !== "}") {
         tokenString += src.content[src.index];
@@ -50,10 +52,14 @@ parseToNextToken = function (src) {
           tokenData.token = "include";
           tokenData.value = tokenString.substr(7).trim();
         } else if (tokenString.match(/^literal/)) {
-          if (!tokenData.value) {
-            tokenData.value = tokenString.substr(7).trim();
+          tokenData.value = tokenString.substr(7).trim();
+          if (!tokenData.value.match(/^"/)) {
             tokenData.token = "literal-variable";
           } else {
+            tokenData.value = tokenData.value.substr(
+              1,
+              tokenData.value.length - 2
+            );
             tokenData.token = "literal";
           }
         } else {
