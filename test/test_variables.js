@@ -26,4 +26,17 @@ describe("Test that variables are parsed", () => {
       expected
     );
   });
+
+  it("should parse same variable multiple times", () => {
+    const view = "<p>This is a { variable }\nand this is { variable }</p>";
+    const expected =
+      "<p>This is a variable value\nand this is variable value</p>";
+
+    assert.equal(
+      viewBuilder.build(view, {
+        variable: "variable value",
+      }),
+      expected
+    );
+  });
 });
