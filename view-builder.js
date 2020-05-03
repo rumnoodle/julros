@@ -20,10 +20,12 @@ parseToNextToken = function (src) {
     eof: false,
     preTokenString: "",
     token: "",
+    value: "",
   };
   tokenString = "";
   tokenFound = false;
   insideToken = false;
+  insideTokenString = false;
 
   while (!tokenFound && !tokenData.eof) {
     if (!insideToken) {
@@ -33,7 +35,13 @@ parseToNextToken = function (src) {
         insideToken = true;
       }
     } else {
-      if (src.content[src.index] !== "}") {
+      if (src.content[src.index] === '"' && !insideTokenString) {
+        insideTokenString = true;
+      } else if (insideTokenString && src.content[src.index] !== '"') {
+        tokenData.value += src.content[src.index];
+      } else if (insideTokenString && src.content[src.index] === '"') {
+        insideTokenString = false;
+      } else if (src.content[src.index] !== "}") {
         tokenString += src.content[src.index];
       } else {
         tokenString = tokenString.trim();
@@ -59,7 +67,7 @@ parseToNextToken = function (src) {
   return tokenData;
 };
 
-// Technically parse does not need to be exported but to work with rewire do it for now
+// Parse does not need to be exported but to work with rewire do it for now
 exports.parse = function (src, data) {
   let tokenData = { eof: false };
   let view = "";
@@ -78,6 +86,8 @@ exports.parse = function (src, data) {
         index: 0,
       };
       view += exports.parse(partialContents, data);
+    } else if (tokenData.token && tokenData.token === "literal") {
+      view += tokenData.value;
     } else if (tokenData.token) {
       let variableValue = resolveVariable(tokenData.token, data);
 
