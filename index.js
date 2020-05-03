@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const parse = require("./parser.js").parse;
+const viewBuilder = require("./view-builder.js");
 
 getFileContents = function (fileName) {
   try {
@@ -44,7 +44,7 @@ exports.render = function (viewFilePath, options) {
   const layoutContent = getFileContents(layoutFilePath);
 
   let content = wrapLayout(layoutContent, viewContent);
-  return parse(content, options);
+  return viewBuilder.build(content, options);
 };
 
 exports.renderFile = function (viewFilePath, options, callback) {
