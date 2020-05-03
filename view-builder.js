@@ -1,9 +1,7 @@
 const file = require("./file.js");
 
-let viewData = {};
-
-resolveVariable = function (name) {
-  let scope = viewData;
+resolveVariable = function (name, data) {
+  let scope = data;
   let nameParts = name.split(".");
 
   for (const part of nameParts) {
@@ -62,24 +60,26 @@ parseToNextToken = function (src) {
 };
 
 // Technically parse does not need to be exported but to work with rewire do it for now
-exports.parse = function (src, view) {
-  tokenData = { eof: false };
+exports.parse = function (src, data) {
+  let tokenData = { eof: false };
+  let view = "";
 
   while (!tokenData.eof) {
     tokenData = parseToNextToken(src);
     view += tokenData.preTokenString;
 
     if (tokenData.token && tokenData.token === "include") {
-      console.log("found partial");
       let partialsPath = file.getPartialsPath(
-        viewData.viewFolder,
+        data.viewsFolder,
         tokenData.value
       );
-      let partialContents = file.getFileContents(partialsPath);
-      console.log(partialContents);
-      view += partialContents;
+      let partialContents = {
+        content: file.getFileContents(partialsPath),
+        index: 0,
+      };
+      view += exports.parse(partialContents, data);
     } else if (tokenData.token) {
-      let variableValue = resolveVariable(tokenData.token);
+      let variableValue = resolveVariable(tokenData.token, data);
 
       if (variableValue) {
         view += variableValue;
@@ -91,6 +91,5 @@ exports.parse = function (src, view) {
 };
 
 exports.build = function (content, data) {
-  viewData = data;
-  return exports.parse({ content: content, index: 0, eof: false }, "");
+  return exports.parse({ content: content, index: 0 }, data);
 };

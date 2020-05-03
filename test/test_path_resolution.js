@@ -26,4 +26,13 @@ describe("Paths to views, layouts etc are resolved correctly", () => {
 
     assert.equal(file.getLayoutFilePath(viewsFolder, layoutName), expected);
   });
+
+  it("should get correct partial file path", () => {
+    const viewsFolder = "/home/who/project/src/views";
+    const partialsName = "widget/partials/wiggly.julros";
+    const expected =
+      "/home/who/project/src/views/widget/partials/wiggly.julros";
+
+    assert.equal(file.getPartialsPath(viewsFolder, partialsName), expected);
+  });
 });
