@@ -24,3 +24,5 @@ exports.getLayoutFilePath = function (viewsFolder, layoutName) {
   const layoutFilePath = path.join(layoutsFolder, layoutFileName);
   return layoutFilePath;
 };
+
+exports.getPartialsPath = function () {};

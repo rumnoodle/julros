@@ -2,7 +2,7 @@ const assert = require("chai").assert;
 const rewire = require("rewire");
 const app = rewire("../index.js");
 
-fileMock = {
+let fileMock = {
   getFileContents: function (filePath) {
     if (filePath === "/home/who/project/src/views/index.julros") {
       return "<p>This is the view</p>";

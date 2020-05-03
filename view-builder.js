@@ -1,3 +1,5 @@
+const file = require("./file.js");
+
 let viewData = {};
 
 resolveVariable = function (name) {
@@ -21,6 +23,7 @@ parseToNextToken = function (src) {
     preTokenString: "",
     token: "",
   };
+  tokenString = "";
   tokenFound = false;
   insideToken = false;
 
@@ -33,9 +36,17 @@ parseToNextToken = function (src) {
       }
     } else {
       if (src.content[src.index] !== "}") {
-        tokenData.token += src.content[src.index];
+        tokenString += src.content[src.index];
       } else {
-        tokenData.token = tokenData.token.trim();
+        tokenString = tokenString.trim();
+
+        if (tokenString.match(/^include/)) {
+          tokenData.token = "include";
+          tokenData.value = tokenString.substr(7).trim();
+        } else {
+          tokenData.token = tokenString;
+        }
+
         insideToken = false;
         tokenFound = true;
       }
@@ -50,14 +61,24 @@ parseToNextToken = function (src) {
   return tokenData;
 };
 
-parse = function (src, view) {
+// Technically parse does not need to be exported but to work with rewire do it for now
+exports.parse = function (src, view) {
   tokenData = { eof: false };
 
   while (!tokenData.eof) {
     tokenData = parseToNextToken(src);
     view += tokenData.preTokenString;
 
-    if (tokenData.token) {
+    if (tokenData.token && tokenData.token === "include") {
+      console.log("found partial");
+      let partialsPath = file.getPartialsPath(
+        viewData.viewFolder,
+        tokenData.value
+      );
+      let partialContents = file.getFileContents(partialsPath);
+      console.log(partialContents);
+      view += partialContents;
+    } else if (tokenData.token) {
       let variableValue = resolveVariable(tokenData.token);
 
       if (variableValue) {
@@ -71,5 +92,5 @@ parse = function (src, view) {
 
 exports.build = function (content, data) {
   viewData = data;
-  return parse({ content: content, index: 0, eof: false }, "");
+  return exports.parse({ content: content, index: 0, eof: false }, "");
 };

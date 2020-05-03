@@ -19,6 +19,7 @@ exports.render = function (viewFilePath, options) {
   const layoutContent = file.getFileContents(layoutFilePath);
 
   let content = wrapLayout(layoutContent, viewContent);
+  options.viewsFolder = viewsFolder;
   return viewBuilder.build(content, options);
 };
 
