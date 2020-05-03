@@ -62,6 +62,13 @@ parseToNextToken = function (src) {
             );
             tokenData.token = "literal";
           }
+        } else if (tokenString.match(/^collection/)) {
+          tokenData.token = "collection";
+          let values = tokenString.substr(10).split(",");
+          values = values.map((value) =>
+            value.match(/^"/) ? value.substr(1, value.length - 2) : value.trim()
+          );
+          tokenData.value = values;
         } else {
           tokenData.token = tokenString;
         }
@@ -106,6 +113,34 @@ exports.parse = function (src, data) {
 
       if (variableValue) {
         view += variableValue;
+      }
+    } else if (tokenData.token && tokenData.token === "collection") {
+      [tag, content, variable] = tokenData.value;
+      if (content.match(/^"/)) {
+        content = content.substr(1, content.length - 2);
+      }
+      let collection = resolveVariable(variable, data);
+
+      let collectionContent = "";
+      if (collection && typeof collection[Symbol.iterator] === "function") {
+        for (const item of collection) {
+          collectionContent += exports.parse(
+            { content: content, index: 0 },
+            { item: item }
+          );
+        }
+
+        if (collectionContent) {
+          let tagName = tag;
+          if (tagName.match(/^"/)) {
+            tagName = tagName.substr(1, tagName.length - 2);
+          }
+          if (tagName.match(/^\</)) {
+            tagName = tagName.substr(1, tagName.length - 2);
+          }
+
+          view += `<${tagName}>${collectionContent}</${tagName}>`;
+        }
       }
     } else if (tokenData.token) {
       let variableValue = resolveVariable(tokenData.token, data);
