@@ -49,6 +49,13 @@ parseToNextToken = function (src) {
         if (tokenString.match(/^include/)) {
           tokenData.token = "include";
           tokenData.value = tokenString.substr(7).trim();
+        } else if (tokenString.match(/^literal/)) {
+          if (!tokenData.value) {
+            tokenData.value = tokenString.substr(7).trim();
+            tokenData.token = "literal-variable";
+          } else {
+            tokenData.token = "literal";
+          }
         } else {
           tokenData.token = tokenString;
         }
@@ -88,6 +95,12 @@ exports.parse = function (src, data) {
       view += exports.parse(partialContents, data);
     } else if (tokenData.token && tokenData.token === "literal") {
       view += tokenData.value;
+    } else if (tokenData.token && tokenData.token === "literal-variable") {
+      let variableValue = resolveVariable(tokenData.value, data);
+
+      if (variableValue) {
+        view += variableValue;
+      }
     } else if (tokenData.token) {
       let variableValue = resolveVariable(tokenData.token, data);
 
