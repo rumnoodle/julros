@@ -1,14 +1,5 @@
-const fs = require("fs");
-const path = require("path");
 const viewBuilder = require("./view-builder.js");
-
-getFileContents = function (fileName) {
-  try {
-    return fs.readFileSync(fileName, "utf8");
-  } catch (err) {
-    return "";
-  }
-};
+const file = require("./file.js");
 
 wrapLayout = function (layout, view) {
   const viewRegex = /\{\s*view\s*\}/;
@@ -20,28 +11,12 @@ wrapLayout = function (layout, view) {
   return view;
 };
 
-getViewsFolder = function (filePath, viewsPath) {
-  const relativeViewsFolder = viewsPath.replace(/^\.\//, "");
-  const viewsFolder = filePath.substring(
-    0,
-    filePath.lastIndexOf(relativeViewsFolder) + relativeViewsFolder.length
-  );
-  return viewsFolder;
-};
-
-getLayoutFilePath = function (viewsFolder, layoutName) {
-  const layoutsFolder = path.join(viewsFolder, "layouts");
-  const layoutFileName = (layoutName || "default") + ".julros";
-  const layoutFilePath = path.join(layoutsFolder, layoutFileName);
-  return layoutFilePath;
-};
-
 exports.render = function (viewFilePath, options) {
-  const viewsFolder = getViewsFolder(viewFilePath, options.settings.views);
-  const layoutFilePath = getLayoutFilePath(viewsFolder, options.layout);
+  const viewsFolder = file.getViewsFolder(viewFilePath, options.settings.views);
+  const layoutFilePath = file.getLayoutFilePath(viewsFolder, options.layout);
 
-  const viewContent = getFileContents(viewFilePath);
-  const layoutContent = getFileContents(layoutFilePath);
+  const viewContent = file.getFileContents(viewFilePath);
+  const layoutContent = file.getFileContents(layoutFilePath);
 
   let content = wrapLayout(layoutContent, viewContent);
   return viewBuilder.build(content, options);
