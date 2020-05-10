@@ -28,3 +28,7 @@ exports.getLayoutFilePath = function (viewsFolder, layoutName) {
 exports.getPartialsPath = function (viewsFolder, pathToPartialFile) {
   return path.join(viewsFolder, pathToPartialFile);
 };
+
+exports.fileExists = function (path) {
+  return fs.existsSync(path);
+};

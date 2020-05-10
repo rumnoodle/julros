@@ -56,9 +56,6 @@ describe("Test that variables are parsed", () => {
     const view = "<p>This is a { undefinedVariable }</p>";
     const expected = "<p>This is a </p>";
 
-    assert.equal(
-      viewBuilder.build(view, {}),
-      expected
-    );
+    assert.equal(viewBuilder.build(view, {}), expected);
   });
 });
