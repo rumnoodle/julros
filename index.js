@@ -1,30 +1,14 @@
-const viewBuilder = require("./view-builder.js");
-const file = require("./file.js");
+const fs = require("fs");
 
-wrapLayout = function (layout, view) {
-  const viewRegex = /\{\s*view\s*\}/;
-  if (layout) {
-    if (layout.match(viewRegex)) {
-      return layout.replace(viewRegex, view);
-    }
+exports.render = function(viewFilePath) {
+  let path = "";
+  if (fs.existsSync("src/views")) {
+    path = ["src", "views"];
+  } else if (fs.existsSync("views")) {
+    path = ["views"];
   }
-  return view;
-};
+  return fs.readFileSync(`${path.join("/")}/${viewFilePath}.julros`);
+}
 
-exports.render = function (viewFilePath, options) {
-  const viewsFolder = file.getViewsFolder(viewFilePath, options.settings.views);
-  const layoutFilePath = file.getLayoutFilePath(viewsFolder, options.layout);
+exports.__express = exports.render;
 
-  const viewContent = file.getFileContents(viewFilePath);
-  const layoutContent = file.getFileContents(layoutFilePath);
-
-  let content = wrapLayout(layoutContent, viewContent);
-  options.viewsFolder = viewsFolder;
-  return viewBuilder.build(content, options);
-};
-
-exports.renderFile = function (viewFilePath, options, callback) {
-  callback(null, exports.render(viewFilePath, options));
-};
-
-exports.__express = exports.renderFile;
