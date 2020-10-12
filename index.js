@@ -1,4 +1,5 @@
 const fs = require("fs");
+const parser = require("./src/parser.js");
 
 exports.render = function(viewFilePath) {
   let path = "";
