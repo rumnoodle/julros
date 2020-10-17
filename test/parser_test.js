@@ -24,4 +24,10 @@ describe("Test parser", () => {
     const result = parser.html(content, { here: { now: "a basket of flowers" } });
     assert.equal(result, "<p>Paradise is a basket of flowers</p>");
   });
+
+  it("should handle multiple variables", () => {
+    const content = "<p>{{ ten }} {{ acious }}</p>";
+    const result = parser.html(content, { ten: "A complete", acious: "sentence" });
+    assert.equal(result, "<p>A complete sentence</p>");
+  });
 });
