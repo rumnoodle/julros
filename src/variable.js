@@ -4,11 +4,7 @@ class Variable {
   }
 
   fetch(key) {
-    return this.getAttributeValue(
-      key.split("."),
-      this.data,
-      []
-    );
+    return this.getAttributeValue(key.split("."), this.data, []);
   }
   
   getAttributeValue(path, data, currentPath) {
