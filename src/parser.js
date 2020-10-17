@@ -1,18 +1,21 @@
-const pattern = /\{\{ .*? \}\}/;
+const variable = require("./variable.js");
 
-function getAttributeValue(path, data) {
-  if (!path.length) {
-    return data;
-  } else {
-    let current = path.shift();
-    return getAttributeValue(path, data[current]);
-  }
-}
+const pattern = /\{\{ .*? \}\}/;
 
 exports.html = (view, data) => {
   let result = view;
+  let value = "";
+  let variableHandler = new variable.Variable(data);
+
   while(item = pattern.exec(result)) {
-    let value = getAttributeValue(item[0].substring(2, item[0].length - 2).trim().split("."), data);
+    switch(item[0]) {
+      case "doh":
+        break;
+      default:
+        value = variableHandler.fetch(item[0]);
+        break;
+    }
+
     result = result.replace(pattern, value);
   }
 
