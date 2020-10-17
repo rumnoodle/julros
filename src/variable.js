@@ -5,17 +5,24 @@ class Variable {
 
   fetch(key) {
     return this.getAttributeValue(
-      item[0].substring(2, item[0].length - 2).trim().split("."),
-      this.data
+      key.split("."),
+      this.data,
+      []
     );
   }
   
-  getAttributeValue(path, data) {
+  getAttributeValue(path, data, currentPath) {
     if (!path.length) {
       return data;
     } else {
       let current = path.shift();
-      return this.getAttributeValue(path, data[current]);
+      currentPath.push(current);
+
+      if (!data.hasOwnProperty(current)) {
+        throw `'${currentPath.join(".")}' does not exist in data provided.`;
+      }
+
+      return this.getAttributeValue(path, data[current], currentPath);
     }
   }
 }

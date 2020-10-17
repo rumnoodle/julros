@@ -12,7 +12,7 @@ exports.html = (view, data) => {
       case "doh":
         break;
       default:
-        value = variableHandler.fetch(item[0]);
+        value = variableHandler.fetch(item[0].substring(2, item[0].length - 2).trim());
         break;
     }
 
