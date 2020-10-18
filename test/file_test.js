@@ -4,7 +4,6 @@ const file = rewire("../src/file.js");
 
 const fileSystemMock = {
   readFileSync(path, options) {
-    console.log(path);
     if (path.endsWith("views/finger-food.julros")) {
       return "<p>This template has finger food.</p>";
     }
