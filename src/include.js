@@ -4,7 +4,11 @@ class Include {
   constructor() {}
 
   fetch(path) {
-    return file.fetch(path);
+    try {
+      return file.fetch(path);
+    } catch (err) {
+      return `&#x007b;&#x007b; ${err.message || err} &#x007d;&#x007d;`;
+    }
   }
 }
 
