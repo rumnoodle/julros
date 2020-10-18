@@ -8,8 +8,16 @@ function fetch(path) {
     setViewPath();
   }
   
-  let fileContent = fs.readFileSync(`${viewPath}/${path}.julros`, { encoding: "utf8" });
-  return fileContent;
+  try {
+    let fileContent = fs.readFileSync(`${viewPath}/${path}.julros`, { encoding: "utf8" });
+    return fileContent;
+  } catch (err) {
+    if (err.code === "ENOENT") {
+      throw `Template '${path}' not found.`;
+    }
+  }
+
+  throw `Unexpected error when fetching template '${path}'.`;
 }
 
 function setViewPath() {
@@ -23,7 +31,7 @@ function setViewPath() {
   } else if (fs.existsSync(`${viewPath}/views`)) {
     viewPath += "/views";
   } else {
-    throw "No views folder found";
+    throw "No views folder found.";
   }
 }
 
