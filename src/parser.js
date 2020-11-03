@@ -1,6 +1,8 @@
 const variable = require("./variable.js");
 const include = require("./include.js");
+const conditional =require("./conditional.js");
 
+// If possible keep pattern this simple, only to search for next occurrence until all have been replaced.
 const pattern = /\{\{ .*? \}\}/;
 
 exports.html = (view, data) => {
@@ -9,6 +11,7 @@ exports.html = (view, data) => {
   let nextItem = "";
   let variableHandler = new variable.Variable(data);
   let includeHandler = new include.Include();
+  let conditionalHandler = new conditional.Conditional();
 
   while(item = pattern.exec(result)) {
     value = "";
@@ -18,6 +21,14 @@ exports.html = (view, data) => {
     switch(nextItemComponents[0]) {
       case "include":
         value = includeHandler.fetch(nextItemComponents[1]);
+        break;
+      case "if":
+        condition = variableHandler.fetch(nextItemComponents[1]);
+        value = conditionalHandler.checkIf(
+          condition,
+          nextItemComponents[2],
+          nextItemComponents[3] || undefined
+        );
         break;
       default:
         value = variableHandler.fetch(nextItemComponents[0]);

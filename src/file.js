@@ -10,7 +10,7 @@ function fetch(path) {
   
   try {
     let fileContent = fs.readFileSync(`${viewPath}/${path}.julros`, { encoding: "utf8" });
-    return fileContent;
+    return fileContent.replace(/\n$/, "");
   } catch (err) {
     if (err.code === "ENOENT") {
       throw `Template '${path}' not found.`;
