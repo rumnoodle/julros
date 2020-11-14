@@ -1,9 +1,17 @@
+const file = require("./file.js");
+
 class Loop {
   constructor() {}
 
   run(templatePath, data) {
-    // at some point this will need to do what parser does but for each different instance in loop
-    return "";
+    const templateContents = file.fetch(templatePath);
+    let html = "";
+
+    data.forEach(object => {
+      html += templateContents;
+    });
+
+    return html;
   }
 }
 
