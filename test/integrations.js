@@ -11,7 +11,7 @@ describe("Test that a template is parsed and rendered", () => {
       falseish: false,
       loopitems: [{loopitemvariable: "First loop object"}, {loopitemvariable: "Second loop object"}]
     };
-    const result = app.render("test/integration", data);
+    const result = app.render("test/integration", data, "test/layout");
     assert.equal(result, expected);
   });
 });
