@@ -1,4 +1,5 @@
 const file = require("./file.js");
+const parser = require("./parser.js");
 
 class Loop {
   constructor() {}
@@ -8,7 +9,7 @@ class Loop {
     let html = "";
 
     data.forEach(object => {
-      html += templateContents;
+      html += parser.run(templateContents, object);
     });
 
     return html;
