@@ -10,5 +10,6 @@
         <p>{{ include missing-template }}</p>
         {{ if trueish test/iftemplate }}
         {{ if falseish test/iftemplate test/elsetemplate }}
+        {{ loop test/looptemplate loopitems }}
     </body>
 </html>

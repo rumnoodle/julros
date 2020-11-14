@@ -8,7 +8,8 @@ describe("Test that a template is parsed and rendered", () => {
     const data = {
       soup: "Soup is good for the soul.",
       trueish: true,
-      falseish: false
+      falseish: false,
+      loopitems: [{loopitemvariable: "First loop object"}, {loopitemvariable: "Second loop object"}]
     };
     const result = app.render("test/integration", data);
     assert.equal(result, expected);
