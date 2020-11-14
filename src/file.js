@@ -21,10 +21,14 @@ function fetch(path) {
 }
 
 function setViewPath() {
-  const fileNamePath = path.dirname(require.main.filename).split("/node_modules")[0];
-  const mainModulePath = path.dirname(process.mainModule.filename).split("/node_modules")[0];
+  try {
+    const fileNamePath = path.dirname(require.main.filename).split("/node_modules")[0];
+    const mainModulePath = path.dirname(process.mainModule.filename).split("/node_modules")[0];
 
-  viewPath = fileNamePath.length < mainModulePath ? fileNamePath : mainModulePath;
+    viewPath = fileNamePath.length < mainModulePath ? fileNamePath : mainModulePath;
+  } catch {
+    viewPath = __dirname.split("/node_modules")[0];
+  }
 
   if (fs.existsSync(`${viewPath}/src/views`)) {
     viewPath += "/src/views";
