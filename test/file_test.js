@@ -14,7 +14,11 @@ const fileSystemMock = {
   },
 
   existsSync(path) {
-    return true;
+    if (path.endsWith("views")) {
+      return true;
+    }
+
+    return false;
   }
 }
 
@@ -26,9 +30,6 @@ describe("Test fetching templates", () => {
   });
 
   it("should throw error on not found template", () => {
-    assert.throw(
-      () => file.fetch("missing"),
-      "Template 'missing' not found."
-    );
+    assert.throw(() => file.fetch("missing"));
   });
 });

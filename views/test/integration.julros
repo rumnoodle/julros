@@ -1,7 +1,6 @@
 <h1>Julros Template</h1>
 <p>This is the test template for julros integration test.</p>
 <p>{{ soup }}</p>
-<p>{{ include missing-template }}</p>
 {{ if trueish test/iftemplate }}
 {{ if falseish test/iftemplate test/elsetemplate }}
 {{ loop test/looptemplate loopitems }}

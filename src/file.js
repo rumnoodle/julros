@@ -4,20 +4,27 @@ const path = require("path");
 let viewPath = null;
 
 function fetch(path) {
-  if (!viewPath) {
-    setViewPath();
+  if (fs.existsSync(path)) {
+    return getFile(path);
+  } else {
+    if (!viewPath) {
+      setViewPath();
+    }
+    return getFile(`${viewPath}/${path}.julros`);
   }
   
+  throw `Unexpected error when fetching template '${path}'.`;
+}
+
+function getFile(fileName) {
   try {
-    let fileContent = fs.readFileSync(`${viewPath}/${path}.julros`, { encoding: "utf8" });
+    let fileContent = fs.readFileSync(fileName, { encoding: "utf8" });
     return fileContent.replace(/\n$/, "");
   } catch (err) {
     if (err.code === "ENOENT") {
-      throw `Template '${path}' not found.`;
+      throw `Template '${fileName}' not found.`;
     }
   }
-
-  throw `Unexpected error when fetching template '${path}'.`;
 }
 
 function setViewPath() {
