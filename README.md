@@ -1,5 +1,7 @@
 # Julros
 
+WARNING, This isn't working with the app.set feature of express currently, needs to be fixed, but it's sort of working as a renderer. END WARNING!
+
 A very simple templating engine basically parsing with a simple regexp and some basic rules. The parser searches for any string matching `{{ some text here }}` where some is the name of the command or action to execute unless it's just one word without any whitespace in which case it tries to fetch that variable.
 
 It adds the result of the computation e.g. fetching a variable, including a template directly into the current version of the template and then searches for the next occurrence of the pattern. If the added content itself has matches these will also be handled until there is no longer any match for the pattern.
