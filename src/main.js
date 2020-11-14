@@ -1,8 +1,12 @@
+const file = require('./file.js');
 const parser = require('./parser.js');
 
-// If possible keep pattern this simple, only to search for next occurrence until all have been replaced.
-const pattern = /\{\{ .*? \}\}/;
+exports.html = (viewPath, data, layoutPath = undefined) => {
+  let viewContents = file.fetch(viewPath);
 
-exports.html = (view, data) => {
-  return parser.run(view, data);
+  if (layoutPath) {
+    viewContents = layoutHandler.wrap(layoutPath, viewContents);
+  }
+
+  return parser.run(viewContents, data);
 }
