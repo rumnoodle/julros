@@ -5,4 +5,6 @@ exports.render = function(viewPath, data, layoutPath = undefined) {
   return main.html(viewPath, data, layoutPath);
 }
 
-exports.__express = exports.render;
+exports.__express = (viewPath, options, callback) {
+  exports.render(viewPath, options, options['layout'] || undefined);
+}
