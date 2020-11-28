@@ -5,6 +5,11 @@ exports.render = function(viewPath, data, layoutPath = undefined) {
   return main.html(viewPath, data, layoutPath);
 }
 
-exports.__express = (viewPath, options, callback) {
-  exports.render(viewPath, options, options['layout'] || undefined);
+exports.__express = function(viewPath, options, callback) {
+  try {
+    let content = exports.render(viewPath, options, options['layout'] || undefined);
+    return callback(null, content);
+  } catch (err) {
+    return callback(err);
+  }
 }
