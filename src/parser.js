@@ -33,8 +33,8 @@ exports.run = (view, data) => {
         );
         break;
       case "loop":
-        items = variableHandler.fetch(nextItemComponents[2]);
-        value = loopHandler.run(nextItemComponents[1], items);
+        items = variableHandler.fetch(nextItemComponents[1]);
+        value = loopHandler.run(nextItemComponents[2], items);
         break;
       default:
         value = variableHandler.fetch(nextItemComponents[0]);

@@ -3,4 +3,4 @@
 <p>{{ soup }}</p>
 {{ if trueish test/iftemplate }}
 {{ if falseish test/iftemplate test/elsetemplate }}
-{{ loop test/looptemplate loopitems }}
+{{ loop loopitems test/looptemplate }}
